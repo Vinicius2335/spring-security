@@ -27,56 +27,47 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin(origins = "*", maxAge = 3600) // cors, permite qualquer acesso à API
 @RequiredArgsConstructor
 public class ParkingSpotController {
-    private final ParkingSpotService parkingSpotService;
+	private final ParkingSpotService parkingSpotService;
 
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping
-    public ResponseEntity<Object> saveParkingSpot(@RequestBody @Valid ParkingSpotDto parkingSpotDto) {
-        parkingSpotDto.setRegistrationDate(LocalDateTime.now(ZoneId.of("UTC")));
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PostMapping
+	public ResponseEntity<Object> saveParkingSpot(@RequestBody @Valid ParkingSpotDto parkingSpotDto) {
+		parkingSpotDto.setRegistrationDate(LocalDateTime.now(ZoneId.of("UTC")));
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(parkingSpotService.save(parkingSpotDto));
-    }
+		return ResponseEntity.status(HttpStatus.CREATED).body(parkingSpotService.save(parkingSpotDto));
+	}
 
-    // Paginação
-    // TODO: TESTAR PAGINAÇAO DPS
-//    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    @GetMapping
-    public ResponseEntity<Page<ParkingSpotModel>> getAllParkingSpot(@PageableDefault(page = 0, size = 10, sort = "idParking", direction = Sort.Direction.ASC) Pageable pageable){
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(parkingSpotService.findAll(pageable));
-    }
+	// Paginação
+	// TODO: TESTAR PAGINAÇAO DPS
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+	@GetMapping
+	public ResponseEntity<Page<ParkingSpotModel>> getAllParkingSpot(
+			@PageableDefault(page = 0, size = 10, sort = "idParking", direction = Sort.Direction.ASC) Pageable pageable) {
+		return ResponseEntity.status(HttpStatus.OK).body(parkingSpotService.findAll(pageable));
+	}
 
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    @GetMapping("/{id}")
-    public ResponseEntity<ParkingSpotModel> getOneParkingSpot(@PathVariable UUID id){
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(parkingSpotService.findByIdOrThrowsException(id));
-    }
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+	@GetMapping("/{id}")
+	public ResponseEntity<ParkingSpotModel> getOneParkingSpot(@PathVariable UUID id) {
+		return ResponseEntity.status(HttpStatus.OK).body(parkingSpotService.findByIdOrThrowsException(id));
+	}
 
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteParkingSpot(@PathVariable UUID id){
-        parkingSpotService.delete(id);
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Object> deleteParkingSpot(@PathVariable UUID id) {
+		parkingSpotService.delete(id);
 
-        return ResponseEntity
-                .status(HttpStatus.NO_CONTENT)
-                .body("Parking Spot deleted successfully");
-    }
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Parking Spot deleted successfully");
+	}
 
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> updateParkingSpot(@PathVariable UUID id,
-                                                    @RequestBody @Valid ParkingSpotDto parkingSpotDto){
-        parkingSpotService.updated(id, parkingSpotDto);
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PutMapping("/{id}")
+	public ResponseEntity<Object> updateParkingSpot(@PathVariable UUID id,
+			@RequestBody @Valid ParkingSpotDto parkingSpotDto) {
+		parkingSpotService.updated(id, parkingSpotDto);
 
-        return ResponseEntity
-                .status(HttpStatus.NO_CONTENT)
-                .body("Parking Spot deleted successfully");
-    }
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Parking Spot deleted successfully");
+	}
 }
 
 //if (parkingSpotService.existsByLicensePlateCar(parkingSpotDto.getLicensePlateCar())) {

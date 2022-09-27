@@ -12,19 +12,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-//@EnableGlobalMethodSecurity(prePostEnabled = true) // em vez de usar o antMatcher podemos usar uma anotaçao nos endpoint para as permiçoes
-@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true) // em vez de usar o antMatcher podemos usar uma anotaçao nos endpoint para as permiçoes
+//@EnableWebSecurity
 public class WebSecurityConfig2 {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         // configs
-        httpSecurity.httpBasic()
+        httpSecurity
+        		.httpBasic()
                 .and()
                 .authorizeHttpRequests()
-                .antMatchers(HttpMethod.GET, "/parking-spot/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/parking-spot").hasAnyRole("ADMIN", "USER")
-                .antMatchers(HttpMethod.DELETE, "/parking-spot/**").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.GET, "/parking-spot/**").permitAll()
+//                .antMatchers(HttpMethod.POST, "/parking-spot").hasAnyRole("ADMIN", "USER")
+//                .antMatchers(HttpMethod.DELETE, "/parking-spot/**").hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()

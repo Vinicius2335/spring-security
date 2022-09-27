@@ -7,11 +7,11 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 @RequiredArgsConstructor
-public class ApartamentValidator implements ConstraintValidator<ApartamentValidation, String> {
+public class ApartmentValidator implements ConstraintValidator<ApartmentValidation, String> {
     private final ParkingSpotService parkingSpotService;
 
     @Override
-    public boolean isValid(String apartament, ConstraintValidatorContext context) {
-        return !parkingSpotService.existsApartament(apartament);
+    public boolean isValid(String apartment, ConstraintValidatorContext context) {
+        return !parkingSpotService.existsApartament(apartment);
     }
 }

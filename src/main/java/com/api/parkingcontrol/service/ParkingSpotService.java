@@ -34,12 +34,12 @@ public class ParkingSpotService {
 		return parkingSpotRepository.existsByParkingSpotNumber(parkingSpotNumber);
 	}
 
-	public boolean existsByApartamentAndBlock(String apartament, String block) {
-		return parkingSpotRepository.existsByApartamentAndBlock(apartament, block);
+	public boolean existsByApartmentAndBlock(String apartment, String block) {
+		return parkingSpotRepository.existsByApartmentAndBlock(apartment, block);
 	}
 
 	public boolean existsApartament(String apartament){
-		return parkingSpotRepository.existsByApartament(apartament);
+		return parkingSpotRepository.existsByApartment(apartament);
 	}
 
 	//public boolean existsBlock(String block){

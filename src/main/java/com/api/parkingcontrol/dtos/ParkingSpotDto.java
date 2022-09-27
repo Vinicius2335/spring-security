@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import com.api.parkingcontrol.annotations.ApartamentValidation;
+import com.api.parkingcontrol.annotations.ApartmentValidation;
 import com.api.parkingcontrol.annotations.LicensePlateCarValidation;
 import com.api.parkingcontrol.annotations.ParkingSpotNumberValidation;
 import lombok.Data;
@@ -43,10 +43,10 @@ public class ParkingSpotDto {
 	@Size(max = 130, message = "The responsibleName field should not be greater than 130 characters")
 	private String responsibleName;
 	
-	@NotBlank(message = "The apartament field cannot be blank")
-	@Size(max = 30, message = "The apartament field should not be greater than 30 characters")
-	@ApartamentValidation
-	private String apartament;
+	@NotBlank(message = "The apartment field cannot be blank")
+	@Size(max = 30, message = "The apartment field should not be greater than 30 characters")
+	@ApartmentValidation
+	private String apartment;
 	
 	@NotBlank(message = "The block field cannot be blank")
 	@Size(max = 30, message = "The block field should not be greater than 30 characters")

@@ -13,9 +13,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 @Target({ FIELD, PARAMETER })
 @Retention(RUNTIME)
-@Constraint(validatedBy = ApartamentValidator.class)
-public @interface ApartamentValidation {
-    String message() default "Invalid Apartament: Parking Spot already in registered for this apartament";
+@Constraint(validatedBy = ApartmentValidator.class)
+public @interface ApartmentValidation {
+    String message() default "Invalid Apartment: Parking Spot already in registered for this apartament";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
