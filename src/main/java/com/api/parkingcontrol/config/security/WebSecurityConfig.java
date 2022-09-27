@@ -12,8 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-//@Configuration
 @RequiredArgsConstructor
+//@Configuration
 //@EnableWebSecurity // desabilita todas as configuraçoes default do spring security
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
@@ -26,12 +26,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeHttpRequests()
                 // restrinçao em relaçao as roles
-                .antMatchers(HttpMethod.GET, "/parking-spot/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/parking-spot").hasAnyRole("ADMIN","USER")
-                .antMatchers(HttpMethod.DELETE, "/parking-spot/**").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.GET, "/parking-spot/**").permitAll()
+//                .antMatchers(HttpMethod.POST, "/parking-spot").hasAnyRole("ADMIN","USER")
+//                .antMatchers(HttpMethod.DELETE, "/parking-spot/**").hasRole("ADMIN")
                 //
                 .anyRequest()
-                .authenticated()
+//                .authenticated()
+                .permitAll()
                 .and()
                 .csrf().disable();
 

@@ -6,12 +6,14 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true) // em vez de usar o antMatcher podemos usar uma anotaçao nos endpoint para as permiçoes
+//@EnableGlobalMethodSecurity(prePostEnabled = true) // em vez de usar o antMatcher podemos usar uma anotaçao nos endpoint para as permiçoes
+@EnableWebSecurity
 public class WebSecurityConfig2 {
 
     @Bean
@@ -20,11 +22,9 @@ public class WebSecurityConfig2 {
         httpSecurity.httpBasic()
                 .and()
                 .authorizeHttpRequests()
-                // restrinçao em relaçao as roles
-                //.antMatchers(HttpMethod.GET, "/parking-spot/**").permitAll()
-                //.antMatchers(HttpMethod.POST, "/parking-spot").hasAnyRole("ADMIN", "USER")
-                //.antMatchers(HttpMethod.DELETE, "/parking-spot/**").hasRole("ADMIN")
-                //
+                .antMatchers(HttpMethod.GET, "/parking-spot/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/parking-spot").hasAnyRole("ADMIN", "USER")
+                .antMatchers(HttpMethod.DELETE, "/parking-spot/**").hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()

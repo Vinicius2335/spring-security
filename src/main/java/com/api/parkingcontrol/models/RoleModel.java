@@ -17,20 +17,18 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "TB_ROLE")
-public class RoleModel implements Serializable, GrantedAuthority {
-    @Id
+public class RoleModel implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Type(type="uuid-char")
     @Column(columnDefinition = "VARCHAR(36)")
     private UUID idRole;
 
-    @Enumerated(EnumType.STRING)
+    //@Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true)
-    private RoleName roleName;
+    private String roleName;
 
-    @Override
-    public String getAuthority() {
-        return roleName.toString();
-    }
 }

@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 public class ParkingSpotController {
     private final ParkingSpotService parkingSpotService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<Object> saveParkingSpot(@RequestBody @Valid ParkingSpotDto parkingSpotDto) {
         parkingSpotDto.setRegistrationDate(LocalDateTime.now(ZoneId.of("UTC")));
@@ -41,7 +41,7 @@ public class ParkingSpotController {
 
     // Paginação
     // TODO: TESTAR PAGINAÇAO DPS
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping
     public ResponseEntity<Page<ParkingSpotModel>> getAllParkingSpot(@PageableDefault(page = 0, size = 10, sort = "idParking", direction = Sort.Direction.ASC) Pageable pageable){
         return ResponseEntity
@@ -49,7 +49,7 @@ public class ParkingSpotController {
                 .body(parkingSpotService.findAll(pageable));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<ParkingSpotModel> getOneParkingSpot(@PathVariable UUID id){
         return ResponseEntity
@@ -57,7 +57,7 @@ public class ParkingSpotController {
                 .body(parkingSpotService.findByIdOrThrowsException(id));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteParkingSpot(@PathVariable UUID id){
         parkingSpotService.delete(id);
@@ -67,7 +67,7 @@ public class ParkingSpotController {
                 .body("Parking Spot deleted successfully");
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateParkingSpot(@PathVariable UUID id,
                                                     @RequestBody @Valid ParkingSpotDto parkingSpotDto){

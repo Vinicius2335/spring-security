@@ -27,6 +27,11 @@ import org.hibernate.annotations.Type;
 @Table(name = "TB_PARKING_SPOT")
 public class ParkingSpotModel implements Serializable {
 
+	/**
+	 * Obrigatorio
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(generator = "uuid2")
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
