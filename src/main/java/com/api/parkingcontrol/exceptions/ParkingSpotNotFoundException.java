@@ -1,4 +1,4 @@
-package com.api.parkingcontrol.exception;
+package com.api.parkingcontrol.exceptions;
 
 public class ParkingSpotNotFoundException extends RuntimeException{
     public ParkingSpotNotFoundException(String message) {

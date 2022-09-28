@@ -1,4 +1,4 @@
-package com.api.parkingcontrol.mapper;
+package com.api.parkingcontrol.mappers;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

@@ -1,11 +1,12 @@
-package com.api.parkingcontrol.service;
+package com.api.parkingcontrol.services;
 
 
 import com.api.parkingcontrol.dtos.ParkingSpotDto;
-import com.api.parkingcontrol.exception.ParkingSpotNotFoundException;
-import com.api.parkingcontrol.mapper.ParkingSpotMapper;
+import com.api.parkingcontrol.exceptions.ParkingSpotNotFoundException;
+import com.api.parkingcontrol.mappers.ParkingSpotMapper;
 import com.api.parkingcontrol.models.ParkingSpotModel;
-import com.api.parkingcontrol.repository.ParkingSpotRepository;
+import com.api.parkingcontrol.repositories.ParkingSpotRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

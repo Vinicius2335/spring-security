@@ -1,4 +1,4 @@
-package com.api.parkingcontrol.exception;
+package com.api.parkingcontrol.exceptions;
 
 import com.api.parkingcontrol.handler.ExceptionDetails;
 import lombok.Getter;

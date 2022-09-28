@@ -1,4 +1,4 @@
-package com.api.parkingcontrol.controller;
+package com.api.parkingcontrol.controllers;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.api.parkingcontrol.dtos.ParkingSpotDto;
 import com.api.parkingcontrol.models.ParkingSpotModel;
-import com.api.parkingcontrol.service.ParkingSpotService;
+import com.api.parkingcontrol.services.ParkingSpotService;
 
 import lombok.RequiredArgsConstructor;
 

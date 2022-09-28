@@ -1,8 +1,5 @@
 package com.api.parkingcontrol.handler;
 
-import com.api.parkingcontrol.exception.ParkingSpotNotFoundException;
-import com.api.parkingcontrol.exception.ParkingSpotNotFoundExceptionDetails;
-import com.api.parkingcontrol.exception.ValidationExceptionDetails;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +7,10 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import com.api.parkingcontrol.exceptions.ParkingSpotNotFoundException;
+import com.api.parkingcontrol.exceptions.ParkingSpotNotFoundExceptionDetails;
+import com.api.parkingcontrol.exceptions.ValidationExceptionDetails;
 
 import java.time.LocalDateTime;
 import java.util.List;

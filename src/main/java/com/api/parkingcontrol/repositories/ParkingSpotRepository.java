@@ -1,4 +1,4 @@
-package com.api.parkingcontrol.repository;
+package com.api.parkingcontrol.repositories;
 
 import java.util.UUID;
 

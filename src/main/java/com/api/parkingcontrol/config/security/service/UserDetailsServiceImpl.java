@@ -1,4 +1,4 @@
-package com.api.parkingcontrol.config.security;
+package com.api.parkingcontrol.config.security.service;
 
 import javax.transaction.Transactional;
 
@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.api.parkingcontrol.models.UserModel;
-import com.api.parkingcontrol.repository.UserRepository;
+import com.api.parkingcontrol.repositories.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
