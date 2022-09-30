@@ -25,6 +25,7 @@ import com.api.parkingcontrol.config.security.service.UserDetailsServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 
+// BUG: Problema com  o authentication manager
 //@Configuration
 //@EnableGlobalMethodSecurity(prePostEnabled = true) // em vez de usar o antMatcher podemos usar uma anotaçao nos endpoint para as permiçoes
 ////@EnableWebSecurity
@@ -49,8 +50,8 @@ public class WebSecurityConfig2 {
                 .authenticated()
                 .and()
                 .csrf().disable()
-                .addFilterAt(jtwAuthenticationFilter, BasicAuthenticationFilter.class)
-                .addFilterAt(jwtValidationFilter, BasicAuthenticationFilter.class)
+                .addFilter(jtwAuthenticationFilter)
+                .addFilter(jwtValidationFilter)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // agora nao temos mais estado gravado no servidor
 
         return httpSecurity.build();

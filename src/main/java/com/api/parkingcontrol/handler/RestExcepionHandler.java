@@ -1,6 +1,9 @@
 package com.api.parkingcontrol.handler;
 
-import org.springframework.context.support.DefaultMessageSourceResolvable;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -11,10 +14,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.api.parkingcontrol.exceptions.ParkingSpotNotFoundException;
 import com.api.parkingcontrol.exceptions.ParkingSpotNotFoundExceptionDetails;
 import com.api.parkingcontrol.exceptions.ValidationExceptionDetails;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class RestExcepionHandler {

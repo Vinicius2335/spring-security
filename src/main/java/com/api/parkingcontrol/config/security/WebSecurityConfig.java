@@ -48,7 +48,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .addFilter(new JWTValidationFilter(authenticationManager(), userDetailsServiceImpl))
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // agora nao temos mais estado gravado no servidor
+             
+                // agora nao temos mais estado gravado no servidor
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); 
 
     }
 
