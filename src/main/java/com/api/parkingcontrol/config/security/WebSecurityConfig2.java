@@ -1,41 +1,61 @@
 package com.api.parkingcontrol.config.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-@Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true) // em vez de usar o antMatcher podemos usar uma anotaçao nos endpoint para as permiçoes
-//@EnableWebSecurity
+import com.api.parkingcontrol.config.filter.JWTFilter;
+import com.api.parkingcontrol.config.filter.LoginFilter;
+
+//@Configuration OBS: Com usar EnableWebSecurity nao precisa dessa anotaçao
+//em vez de usar o antMatcher podemos usar uma anotaçao nos endpoint para as permiçoes
+@EnableGlobalMethodSecurity(prePostEnabled = true) 
+@EnableWebSecurity
 public class WebSecurityConfig2 {
+	@Autowired
+	@Lazy
+	private LoginFilter loginFilter;
+	
+	@Autowired
+	private JWTFilter jwtFilter;
+	
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
+	public AuthenticationManager authenticationManager(UserDetailsServiceImpl userDetailsService) {
+		DaoAuthenticationProvider dao = new DaoAuthenticationProvider();
+		dao.setUserDetailsService(userDetailsService);
+		return new ProviderManager(dao);
+	}
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        // configs
-        httpSecurity
-        		.httpBasic()
-                .and()
-                .authorizeHttpRequests()
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+		// configs
+		httpSecurity.csrf().disable();
+//		httpSecurity.httpBasic(); Comentado pq estamos usando JWT
+		httpSecurity.authorizeHttpRequests().anyRequest().authenticated();
 //                .antMatchers(HttpMethod.GET, "/parking-spot/**").permitAll()
 //                .antMatchers(HttpMethod.POST, "/parking-spot").hasAnyRole("ADMIN", "USER")
 //                .antMatchers(HttpMethod.DELETE, "/parking-spot/**").hasRole("ADMIN")
-                .anyRequest()
-                .authenticated()
-                .and()
-                .csrf().disable();
+		httpSecurity.addFilterBefore(loginFilter, BasicAuthenticationFilter.class);
+		httpSecurity.addFilterBefore(jwtFilter, BasicAuthenticationFilter.class);
+		httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		
+		return httpSecurity.build();
+	}
 
-        return httpSecurity.build();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }
