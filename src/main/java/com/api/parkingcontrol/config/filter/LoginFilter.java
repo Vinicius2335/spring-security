@@ -15,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -42,11 +43,12 @@ public class LoginFilter extends OncePerRequestFilter{
 	}
 
 	private String createJwtToken(Authentication authenticate) {
-		UserModel user = (UserModel)authenticate.getPrincipal();
+//		UserModel user = (UserModel)authenticate.getPrincipal();
+		User user = (User)authenticate.getPrincipal();
 		
 		String rolesString = user.getAuthorities().stream()
-		.map(GrantedAuthority::getAuthority)
-		.collect(Collectors.joining(","));
+				.map(GrantedAuthority::getAuthority)
+				.collect(Collectors.joining(","));
 		
 		return jwtHelper.createToken(user.getUsername(), Map.of("roles", rolesString));
 	}
