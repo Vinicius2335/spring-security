@@ -1,8 +1,10 @@
-# spring-security
+# Spring-security
 
-- Aprendendo Spring Security
+## Estudando Sobre:
+
+- Spring Security sem extender WebSecurityConfigurerAdapter
+- JWT Token
 - Custom Validation
 - Relaçao ManyToMany com spring
+- UUID + MySQL
 
-# Não funcionou
-- JWT Token
