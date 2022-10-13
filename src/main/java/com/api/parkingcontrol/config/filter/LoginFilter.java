@@ -19,14 +19,12 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.api.parkingcontrol.models.UserModel;
-
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
 public class LoginFilter extends OncePerRequestFilter{
-	private final AuthenticationManager authenticationManager;
+	private final AuthenticationManager authManager;
 	private final JWTHelper jwtHelper;
 	
 	@Override
@@ -36,7 +34,7 @@ public class LoginFilter extends OncePerRequestFilter{
 		String username = request.getHeader("username");
 		String password = request.getHeader("password");
 		
-		Authentication authenticate = authenticationManager
+		Authentication authenticate = authManager
 				.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 		
 		response.setHeader(HttpHeaders.AUTHORIZATION, createJwtToken(authenticate));

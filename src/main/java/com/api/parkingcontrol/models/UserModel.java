@@ -32,10 +32,13 @@ public class UserModel implements UserDetails, Serializable {
 	@Type(type = "uuid-char")
 	@Column(columnDefinition = "VARCHAR(36)")
 	private UUID idUser;
+	
 	@Column(nullable = false, unique = true)
 	private String username;
+	
 	@Column(nullable = false)
 	private String password;
+	
 	@ManyToMany
 	@JoinTable(name = "TB_USERS_ROLES", 
 						joinColumns = @JoinColumn(name = "user_id"), 
