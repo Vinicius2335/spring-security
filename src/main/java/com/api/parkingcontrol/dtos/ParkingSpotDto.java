@@ -8,11 +8,17 @@ import javax.validation.constraints.Size;
 import com.api.parkingcontrol.annotations.ApartmentValidation;
 import com.api.parkingcontrol.annotations.LicensePlateCarValidation;
 import com.api.parkingcontrol.annotations.ParkingSpotNumberValidation;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
 public class ParkingSpotDto {
 	
 	@NotBlank(message = "The parkingSpotNumber field cannot be blank")

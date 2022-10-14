@@ -50,7 +50,7 @@ public class ParkingSpotService {
 		return parkingSpotRepository.findAll(pageable);
 	}
 
-	public ParkingSpotModel findByIdOrThrowsException(UUID id){
+	public ParkingSpotModel findByIdOrThrowsParkingSpotNotFoundException(UUID id){
 		return parkingSpotRepository.findById(id)
 				.orElseThrow(() -> new ParkingSpotNotFoundException("Id não encontrado"));
 	}
@@ -58,13 +58,13 @@ public class ParkingSpotService {
 	@Transactional
 	// TODO: REVER A AULA SOBRE Transactional do DevDojo
 	public void delete(UUID id){
-		ParkingSpotModel parkingSpotFound = findByIdOrThrowsException(id);
+		ParkingSpotModel parkingSpotFound = findByIdOrThrowsParkingSpotNotFoundException(id);
 		parkingSpotRepository.delete(parkingSpotFound);
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public void updated(UUID id, ParkingSpotDto parkingSpotDto){
-		ParkingSpotModel parkingSpotFound = findByIdOrThrowsException(id);
+		ParkingSpotModel parkingSpotFound = findByIdOrThrowsParkingSpotNotFoundException(id);
 		ParkingSpotModel parkingSpotUpdated = ParkingSpotMapper.INSTANCE.toParkingSpotModel(parkingSpotDto);
 
 		parkingSpotUpdated.setIdParking(parkingSpotFound.getIdParking());

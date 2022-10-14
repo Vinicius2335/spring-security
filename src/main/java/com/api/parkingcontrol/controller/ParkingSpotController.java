@@ -38,7 +38,7 @@ public class ParkingSpotController {
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping
-	public ResponseEntity<Object> saveParkingSpot(@RequestBody @Valid ParkingSpotDto parkingSpotDto) {
+	public ResponseEntity<ParkingSpotModel> saveParkingSpot(@RequestBody @Valid ParkingSpotDto parkingSpotDto) {
 		parkingSpotDto.setRegistrationDate(LocalDateTime.now(ZoneId.of("UTC")));
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(parkingSpotService.save(parkingSpotDto));
@@ -56,7 +56,7 @@ public class ParkingSpotController {
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	@GetMapping("/{id}")
 	public ResponseEntity<ParkingSpotModel> getOneParkingSpot(@PathVariable UUID id) {
-		return ResponseEntity.status(HttpStatus.OK).body(parkingSpotService.findByIdOrThrowsException(id));
+		return ResponseEntity.status(HttpStatus.OK).body(parkingSpotService.findByIdOrThrowsParkingSpotNotFoundException(id));
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -73,7 +73,7 @@ public class ParkingSpotController {
 			@RequestBody @Valid ParkingSpotDto parkingSpotDto) {
 		parkingSpotService.updated(id, parkingSpotDto);
 
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Parking Spot deleted successfully");
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Parking Spot updated successfully");
 	}
 }
 
