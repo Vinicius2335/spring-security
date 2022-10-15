@@ -7,6 +7,8 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
+import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,6 +26,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 import com.api.parkingcontrol.controller.ParkingSpotController;
+import com.api.parkingcontrol.dtos.ParkingSpotDto;
 import com.api.parkingcontrol.enums.RoleName;
 import com.api.parkingcontrol.models.ParkingSpotModel;
 import com.api.parkingcontrol.models.RoleModel;
@@ -34,78 +37,31 @@ import com.api.parkingcontrol.service.ParkingSpotService;
 import com.api.parkingcontrol.util.ParkingSpotCreator;
 import com.api.parkingcontrol.util.UserCreator;
 
-/* Devido ao problema encontrado com o banco h2 na relaçao manyToMany que nao deixava 
- * realizar o insert into tb_users_roles (user_id, role_id) values (?, ?)
- * vai ter que ser com o banco de dados de produção
- * 
- * 2022-10-15 14:28:42.484  WARN 2372 --- [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 23506,
- * SQLState: 23506
- * 
- * 2022-10-15 14:28:42.485 ERROR 2372 --- [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : Referential
- * integrity constraint violation: "FK6P4O2KXBQ23RTHM174K19XO2H: PUBLIC.TB_USERS_ROLES FOREIGN KEY(ROLE_ID)
- * REFERENCES PUBLIC.TB_ROLE(ID_ROLE) (U&'e&\\fffd\\fffd\\fffd3H\\fffd\\fffd^<\\fffdO//\\fffd')"; 
- * SQL statement:
- * insert into tb_users_roles (user_id, role_id) values (?, ?) [23506-214]
- */
-
-//@AutoConfigureTestDatabase
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 @DisplayName("Integration test for parking spot controller")
-class ParkingSpotControllerIT {
+class ParkingSpotControllerITv2 {
 	@Autowired
 	private TestRestTemplate testRestTemplate;
 	
 	@MockBean
 	private ParkingSpotService parkingSpotService;
 	
-//	@Autowired
-//	private RoleRepositoryTest roleRepositoryTest;
-//	
-//	@Autowired
-//	private UserRepository userRepository;
-	
-	private String userToken;
-	private String adminToken;
 	private static final String ENDPOINT = "/parking-spot";
 	private ParkingSpotModel parkingSpotToSave;
-//	private UserModel user;
-//	private UserModel admin;
-//	private UserModel user2;
 	private HttpEntity<Void> userValidAuthentication;
+	private HttpEntity<Void> adminValidAuthentication;
 	
 	@BeforeEach
 	void setUp() throws Exception {
 		parkingSpotToSave = ParkingSpotCreator.mockParkingSpot();
 		
-//		RoleModel adminRole = roleRepositoryTest.save(RoleModel.builder()
-//				.roleName(RoleName.ROLE_ADMIN).build());
-//		RoleModel userRole = roleRepositoryTest.save(RoleModel.builder()
-//				.roleName(RoleName.ROLE_USER).build());
-//		
-//		user = userRepository.save(UserCreator.mockUser());
-//		user.setRoles(List.of(userRole));
-//		
-//		admin = userRepository.save( UserCreator.mockUserAdmin());
-//		admin.setRoles(List.of(adminRole));
-//		
-//		user2 = userRepository.save(UserCreator.mockUser2Role());
-//		user2.setRoles(List.of(userRole, adminRole));
-//		
-//		System.out.println(roleRepositoryTest.findAllUserRoles());
-//		System.out.println(user.getIdUser());
-//		System.out.println(userRole.getIdRole());
-//		
-//		roleRepositoryTest.saveUserToRole(user.getIdUser(), userRole.getIdRole());
-//		roleRepositoryTest.saveUserToRole(admin.getIdUser(), adminRole.getIdRole());
-//		
-//		roleRepositoryTest.saveUserToRole(user2.getIdUser(), userRole.getIdRole());
-//		roleRepositoryTest.saveUserToRole(user2.getIdUser(), adminRole.getIdRole());
+		adminValidAuthentication = getValidAuthentication(getToken("vinicius", "devdojo"));
+		userValidAuthentication = getValidAuthentication(getToken("goku", "vinicius"));
 		
-//		userValidAuthentication = getUserValidAuthentication(getToken(user2.getUsername(), "onepiece"));
-		
-		
+		BDDMockito.when(parkingSpotService.save(ArgumentMatchers.any(ParkingSpotDto.class)))
+				.thenReturn(parkingSpotToSave);
 	}
 	
 	public String getToken(String username, String password) {
@@ -120,21 +76,13 @@ class ParkingSpotControllerIT {
 		return exchange.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 	}
 	
-	public HttpEntity<Void> getUserValidAuthentication(String token){
-		userToken = "Bearer " + token;
+	public HttpEntity<Void> getValidAuthentication(String token){
+		String userToken = "Bearer " + token;
 		HttpHeaders headers = new HttpHeaders();
 		headers.add(HttpHeaders.AUTHORIZATION, userToken);
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		return new HttpEntity<Void>(headers);
 	}
-	
-//	public HttpEntity<Void> getAdminValidAuthentication(){
-//		adminToken = "Bearer " + getToken(admin.getUsername(), admin.getPassword());
-//		HttpHeaders headers = new HttpHeaders();
-//		headers.add(HttpHeaders.AUTHORIZATION, this.adminToken);
-//		headers.setContentType(MediaType.APPLICATION_JSON);
-//		return new HttpEntity<Void>(headers);
-//	}
 	
 	public HttpEntity<Void> getInvalidAuthentication(){
 		HttpHeaders headers = new HttpHeaders();
@@ -174,21 +122,19 @@ class ParkingSpotControllerIT {
 	@Test
 	@DisplayName("saveParkingSpot saveParkingSpot when successful")
 	public void saveParkingSpot_InsertParkingControl_WhenSuccessful() {
+		ParkingSpotDto parkingSpotDto = ParkingSpotCreator.mockParkingSpotDto();
 		
-		HttpEntity<ParkingSpotModel> httpEntity = new HttpEntity<>(parkingSpotToSave,
-				userValidAuthentication.getHeaders());
+		HttpEntity<ParkingSpotDto> httpEntity = new HttpEntity<>(parkingSpotDto,
+				adminValidAuthentication.getHeaders());
 		
 		ResponseEntity<ParkingSpotModel> exchange = testRestTemplate.exchange(ENDPOINT, HttpMethod.POST,
 				httpEntity, ParkingSpotModel.class);
 		
-		if (exchange.getBody().getIdParking() != null) {
-			parkingSpotToSave.setIdParking(exchange.getBody().getIdParking());
-		}
-		
 		assertAll(
 				() -> assertNotNull(exchange.getBody()),
 				() -> assertEquals(HttpStatus.CREATED, exchange.getStatusCode()),
-				() -> assertEquals(parkingSpotToSave, exchange.getBody())
+				() -> assertEquals(parkingSpotDto.getLicensePlateCar(), exchange.getBody()
+						.getLicensePlateCar())
 		);
 		
 	}

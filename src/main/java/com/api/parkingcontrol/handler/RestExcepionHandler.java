@@ -11,6 +11,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.api.parkingcontrol.exception.InvalidCredentialException;
+import com.api.parkingcontrol.exception.InvalidCredentialExceptionDetails;
 import com.api.parkingcontrol.exception.ParkingSpotNotFoundException;
 import com.api.parkingcontrol.exception.ParkingSpotNotFoundExceptionDetails;
 import com.api.parkingcontrol.exception.ValidationExceptionDetails;
@@ -28,7 +30,19 @@ public class RestExcepionHandler {
                         .details(exception.getMessage())
                         .develloperMessage(exception.getClass().getName())
                         .timestamp(LocalDateTime.now()).build());
-
+    }
+    
+    @ExceptionHandler(InvalidCredentialException.class)
+    public ResponseEntity<InvalidCredentialExceptionDetails> handlerInvalidCredentialException(InvalidCredentialException exception) {
+    	return ResponseEntity
+    			.status(HttpStatus.UNAUTHORIZED)
+    			.body(InvalidCredentialExceptionDetails.builder()
+    					.title("Invalid Login")
+    					.status(HttpStatus.UNAUTHORIZED.value())
+    					.details(exception.getMessage())
+    					.develloperMessage(exception.getClass().getName())
+    					.timestamp(LocalDateTime.now()).build());
+    	
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -54,6 +68,5 @@ public class RestExcepionHandler {
                         .details("Checked Fields")
                         .develloperMessage(exception.getClass().getName())
                         .timestamp(LocalDateTime.now()).build());
-
     }
 }

@@ -44,10 +44,10 @@ public class JWTFilter extends OncePerRequestFilter {
 
 	private Authentication createAuthentication(Map<String, Object> claims) {
 		List<SimpleGrantedAuthority> roles = Arrays.stream(claims.get("roles")
-		.toString()
-		.split(","))
-		.map(SimpleGrantedAuthority::new)
-		.collect(Collectors.toList());
+				.toString()
+				.split(","))
+				.map(SimpleGrantedAuthority::new)
+				.collect(Collectors.toList());
 		
 		return new UsernamePasswordAuthenticationToken(claims.get(Claims.SUBJECT), null, roles);
 	}

@@ -20,4 +20,11 @@ public class UserCreator {
 				.username("goku")
 				.password(new BCryptPasswordEncoder().encode("vinicius")).build();
 	}
+	
+	public static UserModel mockUser2Role() {
+		return UserModel.builder()
+				.idUser(UUID.randomUUID())
+				.username("luffy")
+				.password(new BCryptPasswordEncoder().encode("onepiece")).build();
+	}
 }

@@ -12,12 +12,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.api.parkingcontrol.exception.InvalidCredentialException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,10 +37,17 @@ public class LoginFilter extends OncePerRequestFilter{
 		String username = request.getHeader("username");
 		String password = request.getHeader("password");
 		
-		Authentication authenticate = authManager
-				.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+		try {
+			Authentication authenticate = authManager
+					.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+			
+			response.setHeader(HttpHeaders.AUTHORIZATION, createJwtToken(authenticate));
+			
+		} catch(BadCredentialsException e) {
+			throw new InvalidCredentialException("Login invalido");
+		}
 		
-		response.setHeader(HttpHeaders.AUTHORIZATION, createJwtToken(authenticate));
+		
 	}
 
 	private String createJwtToken(Authentication authenticate) {
