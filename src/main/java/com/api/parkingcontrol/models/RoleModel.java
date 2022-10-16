@@ -15,6 +15,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -36,6 +37,9 @@ public class RoleModel implements GrantedAuthority, Serializable {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true)
     private RoleName roleName;
+    
+    @ManyToMany(mappedBy = "roles")
+    private List<UserModel> users;
 
     @Override
     public String getAuthority() {

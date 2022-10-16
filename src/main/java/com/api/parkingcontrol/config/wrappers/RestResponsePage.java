@@ -1,8 +1,13 @@
-package com.api.parkingcontrol.wrapper;
+package com.api.parkingcontrol.config.wrappers;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
+
+import lombok.Getter;
+import lombok.Setter;
+
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +15,9 @@ import org.springframework.data.domain.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RestResponsePage<T> extends PageImpl<T> {
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)

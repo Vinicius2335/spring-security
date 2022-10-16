@@ -10,15 +10,15 @@ public class UserCreator {
 	public static UserModel mockUser() {
 		return UserModel.builder()
 				.idUser(UUID.randomUUID())
-				.username("vinicius")
-				.password(new BCryptPasswordEncoder().encode("devdojo")).build();
+				.username("goku")
+				.password(new BCryptPasswordEncoder().encode("vinicius")).build();
 	}
 	
 	public static UserModel mockUserAdmin() {
 		return UserModel.builder()
 				.idUser(UUID.randomUUID())
-				.username("goku")
-				.password(new BCryptPasswordEncoder().encode("vinicius")).build();
+				.username("vinicius")
+				.password(new BCryptPasswordEncoder().encode("devdojo")).build();
 	}
 	
 	public static UserModel mockUser2Role() {

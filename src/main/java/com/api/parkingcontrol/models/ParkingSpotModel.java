@@ -13,6 +13,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -52,6 +54,7 @@ public class ParkingSpotModel implements Serializable {
 	private String colorCar;
 	
 	@Column(nullable = false)
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-DD 'T'HH:mm:ss[.SS]'Z'")
 	private LocalDateTime registrationDate;
 	
 	@Column(nullable = false, length = 130)

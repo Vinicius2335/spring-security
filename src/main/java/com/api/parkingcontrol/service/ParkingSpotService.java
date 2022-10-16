@@ -1,7 +1,8 @@
 package com.api.parkingcontrol.service;
 
 
-import com.api.parkingcontrol.dtos.ParkingSpotDto;
+import com.api.parkingcontrol.dtos.ParkingSpotPostDto;
+import com.api.parkingcontrol.dtos.ParkingSpotPutDto;
 import com.api.parkingcontrol.exception.ParkingSpotNotFoundException;
 import com.api.parkingcontrol.mapper.ParkingSpotMapper;
 import com.api.parkingcontrol.models.ParkingSpotModel;
@@ -22,7 +23,7 @@ public class ParkingSpotService {
 	private final ParkingSpotRepository parkingSpotRepository;
 	
 	@Transactional(rollbackFor = { Exception.class })
-	public ParkingSpotModel save(ParkingSpotDto parkingSpotDto) {
+	public ParkingSpotModel save(ParkingSpotPostDto parkingSpotDto) {
 		return parkingSpotRepository.save(ParkingSpotMapper.INSTANCE.toParkingSpotModel(parkingSpotDto));
 	}
 
@@ -63,9 +64,9 @@ public class ParkingSpotService {
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public void updated(UUID id, ParkingSpotDto parkingSpotDto){
+	public void updated(UUID id, ParkingSpotPutDto parkingSpotPutDto){
 		ParkingSpotModel parkingSpotFound = findByIdOrThrowsParkingSpotNotFoundException(id);
-		ParkingSpotModel parkingSpotUpdated = ParkingSpotMapper.INSTANCE.toParkingSpotModel(parkingSpotDto);
+		ParkingSpotModel parkingSpotUpdated = ParkingSpotMapper.INSTANCE.toParkingSpotModel(parkingSpotPutDto);
 
 		parkingSpotUpdated.setIdParking(parkingSpotFound.getIdParking());
 		parkingSpotUpdated.setRegistrationDate(LocalDateTime.now(ZoneId.of("UTC")));

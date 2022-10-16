@@ -23,7 +23,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.api.parkingcontrol.dtos.ParkingSpotDto;
+import com.api.parkingcontrol.dtos.ParkingSpotPostDto;
+import com.api.parkingcontrol.dtos.ParkingSpotPutDto;
 import com.api.parkingcontrol.models.ParkingSpotModel;
 import com.api.parkingcontrol.service.ParkingSpotService;
 
@@ -38,10 +39,10 @@ public class ParkingSpotController {
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping
-	public ResponseEntity<ParkingSpotModel> saveParkingSpot(@RequestBody @Valid ParkingSpotDto parkingSpotDto) {
-		parkingSpotDto.setRegistrationDate(LocalDateTime.now(ZoneId.of("UTC")));
+	public ResponseEntity<ParkingSpotModel> saveParkingSpot(@RequestBody @Valid ParkingSpotPostDto parkingSpotPostDto) {
+		parkingSpotPostDto.setRegistrationDate(LocalDateTime.now(ZoneId.of("UTC")));
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(parkingSpotService.save(parkingSpotDto));
+		return ResponseEntity.status(HttpStatus.CREATED).body(parkingSpotService.save(parkingSpotPostDto));
 	}
 
 	// Paginação
@@ -70,8 +71,8 @@ public class ParkingSpotController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Object> updateParkingSpot(@PathVariable UUID id,
-			@RequestBody @Valid ParkingSpotDto parkingSpotDto) {
-		parkingSpotService.updated(id, parkingSpotDto);
+			@RequestBody @Valid ParkingSpotPutDto parkingSpotPutDto) {
+		parkingSpotService.updated(id, parkingSpotPutDto);
 
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Parking Spot updated successfully");
 	}

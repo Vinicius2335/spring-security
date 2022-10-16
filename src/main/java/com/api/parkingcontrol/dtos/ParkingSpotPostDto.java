@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
-public class ParkingSpotDto {
+public class ParkingSpotPostDto {
 	
 	@NotBlank(message = "The parkingSpotNumber field cannot be blank")
 	@Size(max = 10, message = "The parkingSpotNumber field should not be greater than 10 characters")

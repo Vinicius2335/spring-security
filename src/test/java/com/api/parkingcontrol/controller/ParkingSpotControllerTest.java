@@ -22,7 +22,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.api.parkingcontrol.dtos.ParkingSpotDto;
+import com.api.parkingcontrol.dtos.ParkingSpotPostDto;
+import com.api.parkingcontrol.dtos.ParkingSpotPutDto;
 import com.api.parkingcontrol.exception.ParkingSpotNotFoundException;
 import com.api.parkingcontrol.models.ParkingSpotModel;
 import com.api.parkingcontrol.service.ParkingSpotService;
@@ -44,7 +45,7 @@ class ParkingSpotControllerTest {
 		parkingSpotToSave = ParkingSpotCreator.mockParkingSpot();
 		
 		// save
-		BDDMockito.when(parkingSpotServiceMock.save(any(ParkingSpotDto.class)))
+		BDDMockito.when(parkingSpotServiceMock.save(any(ParkingSpotPostDto.class)))
 				.thenReturn(parkingSpotToSave);
 		
 		// findAll
@@ -61,16 +62,16 @@ class ParkingSpotControllerTest {
 		
 		// updated
 		BDDMockito.doNothing().when(parkingSpotServiceMock).updated(any(UUID.class), 
-				any(ParkingSpotDto.class));
+				any(ParkingSpotPutDto.class));
 		
 	}
 
 	@Test
 	@DisplayName("save insert parkingSpot when successful")
 	public void save_InsertParkingSpot_WhenSuccessful() {
-		ParkingSpotDto parkingSpotDto = ParkingSpotCreator.mockParkingSpotDto();
+		ParkingSpotPostDto parkingSpotPostDto = ParkingSpotCreator.mockParkingSpotPostDto();
 		ResponseEntity<ParkingSpotModel> responseEntity = parkingSpotController
-				.saveParkingSpot(parkingSpotDto);
+				.saveParkingSpot(parkingSpotPostDto);
 		
 		assertAll(
 				() -> assertNotNull(responseEntity.getBody()),
@@ -82,12 +83,12 @@ class ParkingSpotControllerTest {
 	@Test
 	@DisplayName("save Throw ConstraintViolationException when parkingSpotDto have invalid fields")
 	public void save_ThrowConstraintViolationException_WhenParkingSpotDtoHaveInvalidFields() {
-		ParkingSpotDto invalidParkingSpotDto = ParkingSpotCreator.mockInvalidParkingSpotDto();
-		BDDMockito.when(parkingSpotServiceMock.save(any(ParkingSpotDto.class)))
+		ParkingSpotPostDto invalidParkingSpotPostDto = ParkingSpotCreator.mockInvalidParkingSpotPostDto();
+		BDDMockito.when(parkingSpotServiceMock.save(any(ParkingSpotPostDto.class)))
 				.thenThrow(ConstraintViolationException.class);
 		
 		assertThrows(ConstraintViolationException.class, () -> parkingSpotController
-				.saveParkingSpot(invalidParkingSpotDto));
+				.saveParkingSpot(invalidParkingSpotPostDto));
 	}
 	
 	@Test
@@ -167,9 +168,9 @@ class ParkingSpotControllerTest {
 	@Test
 	@DisplayName("updateParkingSpot replace parkingSpot when successful")
 	public void updateParkingSpot_ReplaceParkingSpot_WhenSuccessful() {
-		ParkingSpotDto parkingSpotDto = ParkingSpotCreator.mockParkingSpotDto();
+		ParkingSpotPutDto parkingSpotPutDto = ParkingSpotCreator.mockParkingSpotPutDto();
 		ResponseEntity<Object> updateParkingSpot = parkingSpotController.updateParkingSpot(UUID.randomUUID(),
-				parkingSpotDto);
+				parkingSpotPutDto);
 		
 		assertAll(
 				() -> assertNotNull(updateParkingSpot.getBody()),
@@ -182,20 +183,20 @@ class ParkingSpotControllerTest {
 	@DisplayName("updateParkingSpot Throws ParkingSpotNotFoundException when parkingSpot not found by Id")
 	public void updateParkingSpot_ThrowParkingSpotNotFoundException_WhenParkingNotFoundById() {
 		BDDMockito.doThrow(ParkingSpotNotFoundException.class).when(parkingSpotServiceMock)
-				.updated(any(UUID.class), any(ParkingSpotDto.class));
+				.updated(any(UUID.class), any(ParkingSpotPutDto.class));
 		
-		ParkingSpotDto invalidParkingSpotDto = ParkingSpotCreator.mockInvalidParkingSpotDto();
+		ParkingSpotPutDto invalidParkingSpotPutDto = ParkingSpotCreator.mockInvalidParkingSpotPutDto();
 		
 		assertThrows(ParkingSpotNotFoundException.class, () -> parkingSpotController
-				.updateParkingSpot(UUID.randomUUID(), invalidParkingSpotDto));
+				.updateParkingSpot(UUID.randomUUID(), invalidParkingSpotPutDto));
 	}
 	
 	@Test
 	@DisplayName("updateParkingSpot Throw ConstraintViolationException when parkingSpotDto have invalid fields")
 	public void updateParkingSpot_ThrowConstraintViolationException_WhenParkingSpotDtoHaveInvalidFields() {
-		ParkingSpotDto invalidParkingSpotDto = ParkingSpotCreator.mockInvalidParkingSpotDto();
+		ParkingSpotPutDto invalidParkingSpotDto = ParkingSpotCreator.mockInvalidParkingSpotPutDto();
 		BDDMockito.doThrow(ConstraintViolationException.class).when(parkingSpotServiceMock)
-				.updated(any(UUID.class), any(ParkingSpotDto.class));
+				.updated(any(UUID.class), any(ParkingSpotPutDto.class));
 		
 		assertThrows(ConstraintViolationException.class, () -> parkingSpotController
 				.updateParkingSpot(UUID.randomUUID(), invalidParkingSpotDto));

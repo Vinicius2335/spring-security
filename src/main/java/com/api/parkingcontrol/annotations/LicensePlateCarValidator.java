@@ -6,7 +6,11 @@ import lombok.RequiredArgsConstructor;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
 @RequiredArgsConstructor
+@ResponseStatus(HttpStatus.CONFLICT)
 public class LicensePlateCarValidator implements ConstraintValidator<LicensePlateCarValidation, String> {
     private final ParkingSpotService parkingSpotService;
 

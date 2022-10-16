@@ -3,7 +3,8 @@ package com.api.parkingcontrol.util;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import com.api.parkingcontrol.dtos.ParkingSpotDto;
+import com.api.parkingcontrol.dtos.ParkingSpotPostDto;
+import com.api.parkingcontrol.dtos.ParkingSpotPutDto;
 import com.api.parkingcontrol.models.ParkingSpotModel;
 
 public class ParkingSpotCreator {
@@ -21,21 +22,21 @@ public class ParkingSpotCreator {
 				.block("A").build();
 	}
 	
-	public static ParkingSpotDto mockParkingSpotDto() {
-		return ParkingSpotDto.builder()
-				.parkingSpotNumber("456")
-				.licensePlateCar("789")
-				.brandCar("012")
-				.modelCar("01")
-				.colorCar("#FFF000")
-				.registrationDate(LocalDateTime.now())
-				.responsibleName("Luffy")
-				.apartment("303")
-				.block("C").build();
+	// Post
+	public static ParkingSpotPostDto mockParkingSpotPostDto() {
+		return ParkingSpotPostDto.builder()
+				.parkingSpotNumber("123")
+				.licensePlateCar("456")
+				.brandCar("789")
+				.modelCar("00")
+				.colorCar("#FFFFFF")
+				.responsibleName("Vinicius")
+				.apartment("702")
+				.block("A").build();
 	}
 	
-	public static ParkingSpotDto mockInvalidParkingSpotDto() {
-		return ParkingSpotDto.builder()
+	public static ParkingSpotPostDto mockInvalidParkingSpotPostDto() {
+		return ParkingSpotPostDto.builder()
 				.parkingSpotNumber(null)
 				.licensePlateCar(null)
 				.brandCar(null)
@@ -46,4 +47,43 @@ public class ParkingSpotCreator {
 				.apartment("303")
 				.block("C").build();
 	}
+	
+	// Put
+	public static ParkingSpotPutDto mockParkingSpotPutDto() {
+		return ParkingSpotPutDto.builder()
+				.parkingSpotNumber("123")
+				.licensePlateCar("456")
+				.brandCar("789")
+				.modelCar("00")
+				.colorCar("#FFFFFF")
+				.responsibleName("Vinicius")
+				.apartment("702")
+				.block("A").build();
+	}
+	
+	public static ParkingSpotPutDto mockParkingSpotDtoToUpdated() {
+		return ParkingSpotPutDto.builder()
+				.parkingSpotNumber("123")
+				.licensePlateCar("456")
+				.brandCar("789")
+				.modelCar("00")
+				.colorCar("#FFFFFF")
+				.responsibleName("ZORO")
+				.apartment("702")
+				.block("A").build();
+	}
+	
+	public static ParkingSpotPutDto mockInvalidParkingSpotPutDto() {
+		return ParkingSpotPutDto.builder()
+				.parkingSpotNumber(null)
+				.licensePlateCar(null)
+				.brandCar(null)
+				.modelCar("01")
+				.colorCar("#FFF000")
+				.registrationDate(LocalDateTime.now())
+				.responsibleName("Luffy")
+				.apartment("303")
+				.block("C").build();
+	}
+	
 }
