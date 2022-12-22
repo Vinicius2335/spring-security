@@ -2,8 +2,8 @@ package com.api.parkingcontrol.util;
 
 import java.util.UUID;
 
-import com.api.parkingcontrol.enums.RoleName;
-import com.api.parkingcontrol.models.RoleModel;
+import com.api.parkingcontrol.domain.enums.RoleName;
+import com.api.parkingcontrol.domain.models.RoleModel;
 
 public class RoleCreator {
 	public static RoleModel mockRoleUser() {

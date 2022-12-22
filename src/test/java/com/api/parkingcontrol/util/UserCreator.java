@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.api.parkingcontrol.models.UserModel;
+import com.api.parkingcontrol.domain.models.UserModel;
 
 public class UserCreator {
 	public static UserModel mockUser() {

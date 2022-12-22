@@ -9,14 +9,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 import java.util.Optional;
 
+import com.api.parkingcontrol.domain.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import com.api.parkingcontrol.models.RoleModel;
-import com.api.parkingcontrol.models.UserModel;
+import com.api.parkingcontrol.domain.models.RoleModel;
+import com.api.parkingcontrol.domain.models.UserModel;
 import com.api.parkingcontrol.util.RoleCreator;
 import com.api.parkingcontrol.util.UserCreator;
 

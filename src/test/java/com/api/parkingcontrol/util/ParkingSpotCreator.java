@@ -3,9 +3,9 @@ package com.api.parkingcontrol.util;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import com.api.parkingcontrol.dtos.ParkingSpotPostDto;
-import com.api.parkingcontrol.dtos.ParkingSpotPutDto;
-import com.api.parkingcontrol.models.ParkingSpotModel;
+import com.api.parkingcontrol.api.representation.model.ParkingSpotPostDto;
+import com.api.parkingcontrol.api.representation.model.ParkingSpotPutDto;
+import com.api.parkingcontrol.domain.models.ParkingSpotModel;
 
 public class ParkingSpotCreator {
 	public static ParkingSpotModel mockParkingSpot() {

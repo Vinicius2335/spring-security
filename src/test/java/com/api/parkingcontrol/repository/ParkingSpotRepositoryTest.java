@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.api.parkingcontrol.domain.repository.ParkingSpotRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,7 @@ import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.api.parkingcontrol.models.ParkingSpotModel;
+import com.api.parkingcontrol.domain.models.ParkingSpotModel;
 import com.api.parkingcontrol.util.ParkingSpotCreator;
 
 @DataJpaTest

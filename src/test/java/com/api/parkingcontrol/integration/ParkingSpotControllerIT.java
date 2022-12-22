@@ -24,16 +24,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-import com.api.parkingcontrol.config.wrappers.RestResponsePage;
-import com.api.parkingcontrol.dtos.ParkingSpotPostDto;
-import com.api.parkingcontrol.dtos.ParkingSpotPutDto;
-import com.api.parkingcontrol.enums.RoleName;
-import com.api.parkingcontrol.models.ParkingSpotModel;
-import com.api.parkingcontrol.models.RoleModel;
-import com.api.parkingcontrol.models.UserModel;
-import com.api.parkingcontrol.repository.ParkingSpotRepository;
+import com.api.parkingcontrol.core.config.wrappers.RestResponsePage;
+import com.api.parkingcontrol.api.representation.model.ParkingSpotPostDto;
+import com.api.parkingcontrol.api.representation.model.ParkingSpotPutDto;
+import com.api.parkingcontrol.domain.enums.RoleName;
+import com.api.parkingcontrol.domain.models.ParkingSpotModel;
+import com.api.parkingcontrol.domain.models.RoleModel;
+import com.api.parkingcontrol.domain.models.UserModel;
+import com.api.parkingcontrol.domain.repository.ParkingSpotRepository;
 import com.api.parkingcontrol.repository.RoleRepositoryTest;
-import com.api.parkingcontrol.repository.UserRepository;
+import com.api.parkingcontrol.domain.repository.UserRepository;
 import com.api.parkingcontrol.util.ParkingSpotCreator;
 import com.api.parkingcontrol.util.UserCreator;
 

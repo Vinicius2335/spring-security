@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import javax.validation.ConstraintViolationException;
 
+import com.api.parkingcontrol.api.controller.ParkingSpotController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,11 +23,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.api.parkingcontrol.dtos.ParkingSpotPostDto;
-import com.api.parkingcontrol.dtos.ParkingSpotPutDto;
-import com.api.parkingcontrol.exception.ParkingSpotNotFoundException;
-import com.api.parkingcontrol.models.ParkingSpotModel;
-import com.api.parkingcontrol.service.ParkingSpotService;
+import com.api.parkingcontrol.api.representation.model.ParkingSpotPostDto;
+import com.api.parkingcontrol.api.representation.model.ParkingSpotPutDto;
+import com.api.parkingcontrol.domain.exception.ParkingSpotNotFoundException;
+import com.api.parkingcontrol.domain.models.ParkingSpotModel;
+import com.api.parkingcontrol.domain.service.implementation.ParkingSpotServiceImpl;
 import com.api.parkingcontrol.util.ParkingSpotCreator;
 
 @ExtendWith(SpringExtension.class)
@@ -36,7 +37,7 @@ class ParkingSpotControllerTest {
 	private ParkingSpotController parkingSpotController;
 	
 	@Mock
-	private ParkingSpotService parkingSpotServiceMock;
+	private ParkingSpotServiceImpl parkingSpotServiceImplMock;
 	
 	private ParkingSpotModel parkingSpotToSave;
 
@@ -45,23 +46,23 @@ class ParkingSpotControllerTest {
 		parkingSpotToSave = ParkingSpotCreator.mockParkingSpot();
 		
 		// save
-		BDDMockito.when(parkingSpotServiceMock.save(any(ParkingSpotPostDto.class)))
+		BDDMockito.when(parkingSpotServiceImplMock.save(any(ParkingSpotPostDto.class)))
 				.thenReturn(parkingSpotToSave);
 		
 		// findAll
-		BDDMockito.when(parkingSpotServiceMock.findAll(any(PageRequest.class)))
+		BDDMockito.when(parkingSpotServiceImplMock.findAll(any(PageRequest.class)))
 				.thenReturn(new PageImpl<>(List.of(parkingSpotToSave)));
 		
 		// findByIdOrThrowsParkingSpotNotFoundException
-		BDDMockito.when(parkingSpotServiceMock
+		BDDMockito.when(parkingSpotServiceImplMock
 				.findByIdOrThrowsParkingSpotNotFoundException(any(UUID.class)))
 				.thenReturn(parkingSpotToSave);
 		
 		// delete
-		BDDMockito.doNothing().when(parkingSpotServiceMock).delete(any(UUID.class));
+		BDDMockito.doNothing().when(parkingSpotServiceImplMock).delete(any(UUID.class));
 		
 		// updated
-		BDDMockito.doNothing().when(parkingSpotServiceMock).updated(any(UUID.class), 
+		BDDMockito.doNothing().when(parkingSpotServiceImplMock).updated(any(UUID.class),
 				any(ParkingSpotPutDto.class));
 		
 	}
@@ -84,7 +85,7 @@ class ParkingSpotControllerTest {
 	@DisplayName("save Throw ConstraintViolationException when parkingSpotDto have invalid fields")
 	public void save_ThrowConstraintViolationException_WhenParkingSpotDtoHaveInvalidFields() {
 		ParkingSpotPostDto invalidParkingSpotPostDto = ParkingSpotCreator.mockInvalidParkingSpotPostDto();
-		BDDMockito.when(parkingSpotServiceMock.save(any(ParkingSpotPostDto.class)))
+		BDDMockito.when(parkingSpotServiceImplMock.save(any(ParkingSpotPostDto.class)))
 				.thenThrow(ConstraintViolationException.class);
 		
 		assertThrows(ConstraintViolationException.class, () -> parkingSpotController
@@ -107,7 +108,7 @@ class ParkingSpotControllerTest {
 	@Test
 	@DisplayName("getAllParkingSpot return Empt list of parkingSpot inside page object when no parkingSpot was found")
 	public void getAllParkingSpot_ReturnEmptyListParkingSpotInsidePageObject_WhenNoParkingSpotFound() {
-		BDDMockito.when(parkingSpotServiceMock.findAll(any(PageRequest.class)))
+		BDDMockito.when(parkingSpotServiceImplMock.findAll(any(PageRequest.class)))
 				.thenReturn(new PageImpl<>(List.of()));
 		
 		ResponseEntity<Page<ParkingSpotModel>> responseEntity = parkingSpotController
@@ -136,7 +137,7 @@ class ParkingSpotControllerTest {
 	@Test
 	@DisplayName("getOneParkingSpot Throws ParkingSpotNotFoundException when parkingSpot not found  by Id")
 	public void getOneParkingSpot_ThrowParkingSpotNotFoundException_WhenParkingNotFoundById() {
-		BDDMockito.when(parkingSpotServiceMock.findByIdOrThrowsParkingSpotNotFoundException(any(UUID.class)))
+		BDDMockito.when(parkingSpotServiceImplMock.findByIdOrThrowsParkingSpotNotFoundException(any(UUID.class)))
 				.thenThrow(ParkingSpotNotFoundException.class);
 		
 		assertThrows(ParkingSpotNotFoundException.class, () -> parkingSpotController
@@ -158,7 +159,7 @@ class ParkingSpotControllerTest {
 	@Test
 	@DisplayName("deleteParkingSpot Throws ParkingSpotNotFoundException when parkingSpot not found by Id")
 	public void deleteParkingSpot_ThrowParkingSpotNotFoundException_WhenParkingNotFoundById() {
-		BDDMockito.doThrow(ParkingSpotNotFoundException.class).when(parkingSpotServiceMock)
+		BDDMockito.doThrow(ParkingSpotNotFoundException.class).when(parkingSpotServiceImplMock)
 				.delete(any(UUID.class));
 		
 		assertThrows(ParkingSpotNotFoundException.class, () -> parkingSpotController
@@ -182,7 +183,7 @@ class ParkingSpotControllerTest {
 	@Test
 	@DisplayName("updateParkingSpot Throws ParkingSpotNotFoundException when parkingSpot not found by Id")
 	public void updateParkingSpot_ThrowParkingSpotNotFoundException_WhenParkingNotFoundById() {
-		BDDMockito.doThrow(ParkingSpotNotFoundException.class).when(parkingSpotServiceMock)
+		BDDMockito.doThrow(ParkingSpotNotFoundException.class).when(parkingSpotServiceImplMock)
 				.updated(any(UUID.class), any(ParkingSpotPutDto.class));
 		
 		ParkingSpotPutDto invalidParkingSpotPutDto = ParkingSpotCreator.mockInvalidParkingSpotPutDto();
@@ -195,7 +196,7 @@ class ParkingSpotControllerTest {
 	@DisplayName("updateParkingSpot Throw ConstraintViolationException when parkingSpotDto have invalid fields")
 	public void updateParkingSpot_ThrowConstraintViolationException_WhenParkingSpotDtoHaveInvalidFields() {
 		ParkingSpotPutDto invalidParkingSpotDto = ParkingSpotCreator.mockInvalidParkingSpotPutDto();
-		BDDMockito.doThrow(ConstraintViolationException.class).when(parkingSpotServiceMock)
+		BDDMockito.doThrow(ConstraintViolationException.class).when(parkingSpotServiceImplMock)
 				.updated(any(UUID.class), any(ParkingSpotPutDto.class));
 		
 		assertThrows(ConstraintViolationException.class, () -> parkingSpotController
